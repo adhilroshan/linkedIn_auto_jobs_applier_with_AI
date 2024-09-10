@@ -11,6 +11,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompt_values import StringPromptValue
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama, OllamaEmbeddings
 from Levenshtein import distance
 
 import src.strings as strings
@@ -20,7 +21,7 @@ load_dotenv()
 
 class LLMLogger:
     
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm: ChatOllama):
         self.llm = llm
 
     @staticmethod
@@ -78,7 +79,7 @@ class LLMLogger:
 
 class LoggerChatModel:
 
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm: ChatOllama):
         self.llm = llm
 
     def __call__(self, messages: List[Dict[str, str]]) -> str:
@@ -115,7 +116,7 @@ class LoggerChatModel:
 class GPTAnswerer:
     def __init__(self, openai_api_key):
         self.llm_cheap = LoggerChatModel(
-            ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key, temperature=0.4)
+            ChatOllama(model_name="gemma2", temperature=0.4)
         )
     @property
     def job_description(self):
